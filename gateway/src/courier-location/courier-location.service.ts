@@ -1,6 +1,10 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
+import {
+  GetAllCouriersLastLocationApiResponse,
+  GetCourierLastLocationApiResponse,
+} from './courier-location-service.interface';
 import { SaveCourierLocationDto } from './dto/save-courier-location.dto';
 
 @Injectable()
@@ -15,25 +19,29 @@ export class CourierLocationService {
   async saveCourierLocation(
     saveCourierLocationDto: SaveCourierLocationDto,
   ): Promise<SaveCourierLocationDto> {
-    this.courierLocationEventClient
+    await this.courierLocationEventClient
       .send('save_location', saveCourierLocationDto)
       .subscribe((response) => response);
 
     return saveCourierLocationDto;
   }
 
-  async getCourierLastLocation(courierId: string) {
-    const response = await firstValueFrom(
+  async getCourierLastLocation(
+    courierId: string,
+  ): Promise<GetCourierLastLocationApiResponse> {
+    const response = await firstValueFrom<GetCourierLastLocationApiResponse>(
       this.courierLocationClient.send('get-courier-last-location', courierId),
     );
 
     return response;
   }
 
-  async getAllCouriersLastLocation() {
-    const response = await firstValueFrom(
-      this.courierLocationClient.send('get-all-couriers-last-location', {}),
-    );
+  async getAllCouriersLastLocation(): Promise<
+    GetAllCouriersLastLocationApiResponse[]
+  > {
+    const response = await firstValueFrom<
+      GetAllCouriersLastLocationApiResponse[]
+    >(this.courierLocationClient.send('get-all-couriers-last-location', {}));
 
     return response;
   }

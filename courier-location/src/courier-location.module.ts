@@ -16,7 +16,7 @@ import * as redisStore from 'cache-manager-redis-store';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
-        uri: 'mongodb://root:pass@db:27017/courierLocationCase?authSource=admin',
+        uri: process.env.MONGO_URI,
       }),
     }),
     MongooseModule.forFeature([

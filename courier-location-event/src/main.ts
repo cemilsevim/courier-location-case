@@ -14,6 +14,7 @@ async function bootstrap() {
           durable: false,
         },
         noAck: false,
+        prefetchCount: 1,
       },
     },
   );

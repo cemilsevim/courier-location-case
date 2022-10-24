@@ -19,10 +19,9 @@ export class CourierLocationEventController {
     @Payload() saveCourierLocationDto: SaveCourierLocationDto,
     @Ctx() context: RmqContext,
   ) {
-    await this.courierLocationEventService.saveLocation(saveCourierLocationDto);
-
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
+    await this.courierLocationEventService.saveLocation(saveCourierLocationDto);
     channel.ack(originalMsg);
   }
 }
