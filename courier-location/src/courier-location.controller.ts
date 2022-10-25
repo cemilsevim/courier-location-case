@@ -20,12 +20,12 @@ export class CourierLocationController {
   }
 
   @MessagePattern('get-courier-last-location')
-  getCourierLastLocation(courierId: string): Promise<CourierLocationEntity> {
+  getCourierLastLocation(courierId: string): Promise<CourierLocationEntity | null> {
     return this.courierLocationService.getCourierLastLocation(courierId);
   }
 
   @MessagePattern('get-all-couriers-last-location')
-  getAllCouriersLastLocation() {
+  getAllCouriersLastLocation(): Promise<CourierLocationService[] | null> {
     return this.courierLocationService.getAllCouriersLastLocation();
   }
 }
